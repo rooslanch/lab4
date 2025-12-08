@@ -25,18 +25,15 @@ public class ChartsWindow implements SimulationObserver {
         stage = new Stage();
         stage.setTitle("Simulation Charts");
 
-        // Настраиваем оси - ОТКЛЮЧАЕМ автоопределение диапазона
         speedXAxis.setAutoRanging(false);
         positionXAxis.setAutoRanging(false);
 
-        // Устанавливаем начальные границы
         double window = WINDOW_SIZE * dt;
         speedXAxis.setLowerBound(0);
         speedXAxis.setUpperBound(window);
         positionXAxis.setLowerBound(0);
         positionXAxis.setUpperBound(window);
 
-        // ----------- SPEED CHART -----------
         NumberAxis speedYAxis = new NumberAxis();
         speedYAxis.setAutoRanging(true);
         speedXAxis.setLabel("Time, s");
@@ -46,7 +43,6 @@ public class ChartsWindow implements SimulationObserver {
         speedSeries.setName("v(t)");
         speedChart.getData().add(speedSeries);
 
-        // ----------- POSITION CHART -----------
         NumberAxis posYAxis = new NumberAxis();
         posYAxis.setAutoRanging(true);
         positionXAxis.setLabel("Time, s");
@@ -56,7 +52,6 @@ public class ChartsWindow implements SimulationObserver {
         positionSeries.setName("x(t)");
         posChart.getData().add(positionSeries);
 
-        // ----------- WINDOW UI -----------
         var root = new javafx.scene.layout.VBox(speedChart, posChart);
         root.setSpacing(10);
         stage.setScene(new Scene(root, 800, 600));
@@ -73,7 +68,6 @@ public class ChartsWindow implements SimulationObserver {
         time += dt;
 
         Platform.runLater(() -> {
-            // ------------- UPDATE SERIES -------------
             speedSeries.getData().add(new XYChart.Data<>(time, e.getV()));
             positionSeries.getData().add(new XYChart.Data<>(time, e.getX()));
 
@@ -85,11 +79,9 @@ public class ChartsWindow implements SimulationObserver {
                 positionSeries.getData().remove(0);
             }
 
-            // ------------- FIXED MOVING WINDOW -------------
             double window = WINDOW_SIZE * dt;
             double minX = time - window;
 
-            // Если еще не накопили достаточно данных для полного окна
             if (minX < 0) {
                 minX = 0;
                 // Пока данные не заполнили окно, увеличиваем правую границу

@@ -12,6 +12,7 @@ import com.example.lab4.simulation.controller.thread.TimingConfig;
 import com.example.lab4.simulation.model.PhysicsEngine;
 import com.example.lab4.simulation.model.PhysicsModel;
 import com.example.lab4.simulation.model.Terrain;
+import com.example.lab4.simulation.model.dto.TerrainDTO;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -31,7 +32,15 @@ public class SimulationControllerImpl implements SimulationController {
         this.model = model;
         this.physics = new PhysicsEngine(terrain, model);
     }
-
+    @Override
+    public TerrainDTO getTerrainDTO() {
+        return new TerrainDTO(
+                terrain.getPoints().stream()
+                        .map(p -> new TerrainDTO.Point(p.getX(), p.getH()))
+                        .toList()
+        );
+    }
+    @Override
     public double getDt() {
         return timing.getDt();
     }
