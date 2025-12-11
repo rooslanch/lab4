@@ -17,7 +17,7 @@ public class BoundaryReachedEvent implements SimulationEvent {
         return type;
     }
 
-    public double getPosition() {
+    public double getX() {
         return position;
     }
 

@@ -32,7 +32,7 @@ public class PresetTerrainFactory {
         return new Terrain(points);
     }
 
-    // Можно добавить любые "фигурные" пресеты
+    // Можно добавить любые фигурные пресеты
     public static Terrain createWave(double length, double amplitude, int waves) {
         List<TerrainPoint> points = new ArrayList<>();
         int numPoints = waves * 20;

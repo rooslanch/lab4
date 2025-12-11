@@ -53,6 +53,9 @@ public class SimulationLoop implements Runnable {
     public boolean isRunning() {
         return running;
     }
+    public double getA() {
+        return engine.getCurrentAcceleration();
+    }
 
     @Override
     public void run() {
@@ -91,6 +94,7 @@ public class SimulationLoop implements Runnable {
                                 model.getX(),
                                 model.getV(),
                                 engine.getCurrentAcceleration(),
+                                terrain.getHeightAt(model.getX()),
                                 engine.getCurrentSlope()
                         )
                 );

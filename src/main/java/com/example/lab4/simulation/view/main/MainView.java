@@ -18,54 +18,25 @@ public class MainView {
 
     private final BorderPane root;
     private final TerrainCanvas terrainCanvas;
-    private final SimulationController controller;
 
     public MainView(SimulationController controller) {
-        this.controller = controller;
         this.root = new BorderPane();
 
-        // Получаем DTO один раз
+        // DTO террейна
         TerrainDTO terrainDTO = controller.getTerrainDTO();
 
-        // Canvas для рисования террейна и объекта
+        // Канвас
         terrainCanvas = new TerrainCanvas(controller, terrainDTO);
         root.setCenter(terrainCanvas);
 
-        // Привязываем размеры канваса к центру BorderPane
-        terrainCanvas.widthProperty().bind(root.widthProperty().subtract(250)); // 250px для панели слева
+        terrainCanvas.widthProperty().bind(root.widthProperty().subtract(250));
         terrainCanvas.heightProperty().bind(root.heightProperty());
 
-        // ---------------- Панель управления ----------------
-        VBox leftPanel = new VBox(20);
-        leftPanel.setPadding(new Insets(10));
+        // ---- Контроллер View ----
+        MainViewController viewController = new MainViewController(controller);
 
-        HBox buttons = new HBox(10);
-        Button startBtn = new Button("Start");
-        Button stopBtn = new Button("Stop");
-        Button pauseBtn = new Button("Pause");
-        Button resumeBtn = new Button("Resume");
-        Button resetBtn = new Button("Reset");
-
-        startBtn.setOnAction(e -> controller.start());
-        stopBtn.setOnAction(e -> controller.stop());
-        pauseBtn.setOnAction(e -> controller.execute(new SetPausedCommand(true)));
-        resumeBtn.setOnAction(e -> controller.execute(new SetPausedCommand(false)));
-        resetBtn.setOnAction(e -> controller.execute(new ResetSimulationCommand()));
-
-        buttons.getChildren().addAll(startBtn, stopBtn, pauseBtn, resumeBtn, resetBtn);
-
-        Label throttleLabel = new Label("Throttle Force");
-        Slider throttleSlider = new Slider(-5000, 5000, 0);
-        throttleSlider.setMajorTickUnit(1000);  // Крупные деления каждые 1000
-        throttleSlider.setMinorTickCount(4);     // Мелкие деления между крупными (5 частей)
-        throttleSlider.setShowTickLabels(true);
-        throttleSlider.setShowTickMarks(true);
-        throttleSlider.valueProperty().addListener((obs, oldVal, newVal) ->
-                controller.execute(new SetThrottleCommand(newVal.doubleValue()))
-        );
-
-        leftPanel.getChildren().addAll(buttons, throttleLabel, throttleSlider);
-
+        // Добавляем панель
+        VBox leftPanel = viewController.createControlPanel();
         root.setLeft(leftPanel);
     }
 
@@ -73,3 +44,4 @@ public class MainView {
         return root;
     }
 }
+

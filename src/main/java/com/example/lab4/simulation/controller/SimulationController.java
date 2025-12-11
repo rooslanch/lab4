@@ -9,6 +9,7 @@ import com.example.lab4.simulation.controller.thread.SimulationLoop;
 import com.example.lab4.simulation.model.PhysicsEngine;
 import com.example.lab4.simulation.model.PhysicsModel;
 import com.example.lab4.simulation.model.Terrain;
+import com.example.lab4.simulation.model.dto.SnapshotDTO;
 import com.example.lab4.simulation.model.dto.TerrainDTO;
 
 public interface SimulationController {
@@ -36,4 +37,5 @@ public interface SimulationController {
     Terrain getTerrain();
     double getDt();
     TerrainDTO getTerrainDTO();
+    SnapshotDTO getSnapshotDTO();
 }

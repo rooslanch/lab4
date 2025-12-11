@@ -12,6 +12,7 @@ import com.example.lab4.simulation.controller.thread.TimingConfig;
 import com.example.lab4.simulation.model.PhysicsEngine;
 import com.example.lab4.simulation.model.PhysicsModel;
 import com.example.lab4.simulation.model.Terrain;
+import com.example.lab4.simulation.model.dto.SnapshotDTO;
 import com.example.lab4.simulation.model.dto.TerrainDTO;
 
 import java.util.List;
@@ -41,12 +42,20 @@ public class SimulationControllerImpl implements SimulationController {
         );
     }
     @Override
+    public SnapshotDTO getSnapshotDTO() {
+        double x = model.getX();
+        double v = model.getV();
+        double a = physics.getCurrentAcceleration();
+        double slope = physics.getCurrentSlope();
+        double height = terrain.getHeightAt(x);
+        double t = System.currentTimeMillis();
+
+        return new SnapshotDTO(x, v, a, slope, height, t);
+    }
+    @Override
     public double getDt() {
         return timing.getDt();
     }
-    // =========================================================================
-    //   ЖИЗНЕННЫЙ ЦИКЛ СИМУЛЯЦИИ
-    // =========================================================================
 
     @Override
     public synchronized void start() {
@@ -64,9 +73,6 @@ public class SimulationControllerImpl implements SimulationController {
         }
     }
 
-    // =========================================================================
-    //                               КОМАНДЫ
-    // =========================================================================
 
     @Override
     public void execute(ControlCommand command) {
@@ -86,7 +92,7 @@ public class SimulationControllerImpl implements SimulationController {
     public ObserverRegistration addObserver(SimulationObserver observer) {
         observers.add(observer);
 
-        return new SimpleObserverRegistration(() -> observers.remove(observer));
+        return new SimpleObserverRegistration(() -> observers.remove(observer)); // передаем коллбек для отписки
     }
 
     /** Вызывается SimulationLoop при возникновении событий */
@@ -97,9 +103,6 @@ public class SimulationControllerImpl implements SimulationController {
         }
     }
 
-    // =========================================================================
-    //         Методы, которые используются командами (SetThrottle и др.)
-    // =========================================================================
 
     @Override
     public PhysicsEngine getPhysicsEngine() {

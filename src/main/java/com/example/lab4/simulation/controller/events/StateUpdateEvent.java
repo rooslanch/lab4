@@ -5,13 +5,15 @@ public class StateUpdateEvent implements SimulationEvent {
     private final double x;
     private final double v;
     private final double a;
+    private final double h;
     private final double slope;
     private final long timestamp;
 
-    public StateUpdateEvent(double x, double v, double a, double slope) {
+    public StateUpdateEvent(double x, double v, double a, double h, double slope) {
         this.x = x;
         this.v = v;
         this.a = a;
+        this.h = h;
         this.slope = slope;
         this.timestamp = System.currentTimeMillis();
     }
@@ -32,6 +34,9 @@ public class StateUpdateEvent implements SimulationEvent {
                 '}';
     }
 
+    public double getH() {
+        return h;
+    }
     public double getX() { return x; }
     public double getV() { return v; }
     public double getA() { return a; }
