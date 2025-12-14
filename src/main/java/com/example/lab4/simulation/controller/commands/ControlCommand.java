@@ -5,7 +5,7 @@ import com.example.lab4.simulation.model.PhysicsEngine;
 import com.example.lab4.simulation.model.PhysicsModel;
 
 /**
- * Маркерный интерфейс команды управления симуляцией.
+ * Интерфейс команды управления симуляцией.
  * Команда будет передана контроллеру, который решает, как её обработать.
  */
 public interface ControlCommand {
