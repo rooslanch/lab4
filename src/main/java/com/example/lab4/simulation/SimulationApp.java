@@ -20,12 +20,9 @@ public class SimulationApp extends Application {
 
     @Override
     public void start(Stage stage) {
-
-        // ---------------- Террейн ----------------
         Terrain terrain = PresetTerrainFactory.createWave(50,2,2);
         PhysicsModel model = new PhysicsModel(1); // масса 1000 кг
 
-        // ---------------- Контроллер ----------------
         SimulationController controller = new SimulationControllerImpl(terrain, model);
 
         // ---------------- Графики ----------------

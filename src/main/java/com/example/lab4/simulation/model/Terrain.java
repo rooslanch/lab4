@@ -7,8 +7,9 @@ public class Terrain {
 
     private final List<TerrainPoint> points;
     private final TerrainInterpolator interpolator;
+    private final FrictionProfile frictionProfile;
 
-    public Terrain(List<TerrainPoint> points) {
+    public Terrain(List<TerrainPoint> points, FrictionProfile frictionProfile) {
         if (points == null || points.size() < 2)
             throw new IllegalArgumentException("Terrain must contain at least 2 points");
 
@@ -17,6 +18,11 @@ public class Terrain {
 
         this.points = List.copyOf(sorted); // immutable list для хранения
         this.interpolator = new TerrainInterpolator(this.points);
+        this.frictionProfile = frictionProfile;
+    }
+
+    public double getFrictionAt(double x) {
+        return frictionProfile.getFrictionAt(x);
     }
 
     public List<TerrainPoint> getPoints() {

@@ -14,6 +14,7 @@ public class SimulationLoop implements Runnable {
 
     private final SimulationControllerImpl controller;
     private final TimingConfig timing;
+    private double lastFriction = Double.NaN;
 
     private volatile boolean running = false;
     private volatile boolean paused = false;
@@ -71,6 +72,12 @@ public class SimulationLoop implements Runnable {
                 double x = model.getX();
                 double v = model.getV();
                 double slope = engine.getCurrentSlope();
+                double friction = terrain.getFrictionAt(x);
+
+                if (Double.isNaN(lastFriction) || friction != lastFriction) {
+                    lastFriction = friction;
+                    controller.dispatchEvent(new FrictionChangedEvent(friction));
+                }
 
                 // Ограничение координаты по террейну
                 if (x <= terrain.getMinX()) {

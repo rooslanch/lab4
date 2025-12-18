@@ -62,7 +62,7 @@ public class MainViewController implements SimulationObserver {
 
         buttons.getChildren().addAll(startBtn, stopBtn, pauseBtn, resumeBtn, resetBtn);
 
-        // --------- MASS SLIDER ---------
+
         Label massLabel = new Label("Mass (kg)");
         massSlider = new Slider(1, 1000, 1); // по умолчанию 1
         massSlider.setShowTickLabels(true);

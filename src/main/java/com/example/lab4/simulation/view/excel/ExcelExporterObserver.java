@@ -108,7 +108,7 @@ public class ExcelExporterObserver implements SimulationObserver {
         }
 
         if (ev instanceof SimulationResetEvent) {
-            // останавливаем поток и создаём новый файл
+            // останавливаем поток и создаем новый файл
             stopExportThread();
             startExportThread();
         }

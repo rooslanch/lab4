@@ -51,6 +51,11 @@ public class LogObserver implements SimulationObserver {
         if (ev instanceof MassChangedEvent m) {
             log(String.format("Mass changed: x=%.2f", m.getNewMass()));
         }
+
+        if (ev instanceof FrictionChangedEvent f) {
+            log(String.format("Friction changed: x=%.2f", f.getNewFriction()));
+        }
+
     }
 }
 

@@ -29,25 +29,31 @@ public class PhysicsEngine {
         double v = model.getV();
         double m = model.getMass();
 
-        // 1. Вычислить наклон k = dh/dx
         double slope = terrain.getSlopeAt(x);
+        double mu = terrain.getFrictionAt(x);
 
-        // 2. Проекция g вдоль наклона
-        double gravityComponent = m * G * slope / Math.sqrt(1 + slope * slope);
+        double cosTheta = 1.0 / Math.sqrt(1 + slope * slope);
 
-        // 3. Суммарная сила
-        double netForce = throttleForce - gravityComponent;
+        double gravityComponent =
+                m * G * slope / Math.sqrt(1 + slope * slope);
 
-        // 4. Ускорение
+        double normalForce = m * G * cosTheta;
+        double frictionForce = mu * normalForce * Math.signum(v);
+
+        double netForce =
+                throttleForce
+                        - gravityComponent
+                        - frictionForce;
+
         double a = netForce / m;
 
-        // 5. Интегрирование скорости и координаты
         double newV = v + a * dt;
         double newX = x + newV * dt;
 
         model.setV(newV);
         model.setX(newX);
     }
+
 
     /**
      * Текущие данные для отображения.

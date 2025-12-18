@@ -10,7 +10,6 @@ import com.example.lab4.simulation.model.PhysicsModel;
  */
 public class ResetSimulationCommand implements ControlCommand {
 
-
     @Override
     public void execute(SimulationController controller) {
         controller.getModel().reset();
