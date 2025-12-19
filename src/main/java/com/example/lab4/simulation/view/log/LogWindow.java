@@ -12,6 +12,7 @@ public class LogWindow {
 
     private static final int MAX_LINES = 500;
     private static final long UPDATE_INTERVAL_MS = 100;
+    private Runnable onClose;
 
     private final TextArea textArea = new TextArea();
     private final Deque<String> lines = new ArrayDeque<>();
@@ -27,6 +28,13 @@ public class LogWindow {
 
         BorderPane root = new BorderPane(textArea);
         stage.setScene(new Scene(root, 600, 400));
+
+        stage.setOnCloseRequest(e -> {
+            if (onClose != null) {
+                onClose.run();
+            }
+        });
+
         stage.show();
 
         startUpdateTimer();
@@ -76,4 +84,9 @@ public class LogWindow {
             textArea.setScrollTop(Double.MAX_VALUE);
         });
     }
+
+    public void setOnClose(Runnable onClose) {
+        this.onClose = onClose;
+    }
+
 }

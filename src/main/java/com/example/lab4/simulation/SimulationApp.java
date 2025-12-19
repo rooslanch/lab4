@@ -7,6 +7,7 @@ import com.example.lab4.simulation.model.PhysicsModel;
 import com.example.lab4.simulation.model.Terrain;
 import com.example.lab4.simulation.view.charts.ChartsWindow;
 import com.example.lab4.simulation.view.excel.ExcelExporterObserver;
+import com.example.lab4.simulation.view.factory.ViewFactory;
 import com.example.lab4.simulation.view.log.LogObserver;
 import com.example.lab4.simulation.view.main.MainView;
 import javafx.application.Application;
@@ -43,16 +44,13 @@ public class SimulationApp extends Application {
 // подписываемся на контроллер
         controller.addObserver(excelObserver);
 
-        // ---------------- GUI ----------------
-        MainView mainView = new MainView(controller); // почему-то не addObserver
-        BorderPane root = mainView.getRoot();
+        ViewFactory factory = new ViewFactory(controller);
 
+        // главное окно
+        factory.createMainWindow(stage);
 
-        // ---------------- Сцена ----------------
-        Scene scene = new Scene(root, 1200, 800);
-        stage.setScene(scene);
-        stage.setTitle("Simulation Test");
-        stage.show();
+        // окно управления (слайдеры)
+        factory.createControlWindow();
     }
 
     public static void main(String[] args) {

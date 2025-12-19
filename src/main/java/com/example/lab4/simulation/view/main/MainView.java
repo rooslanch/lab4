@@ -1,44 +1,33 @@
 package com.example.lab4.simulation.view.main;
 
 import com.example.lab4.simulation.controller.SimulationController;
-import com.example.lab4.simulation.controller.commands.ResetSimulationCommand;
-import com.example.lab4.simulation.controller.commands.SetPausedCommand;
-import com.example.lab4.simulation.controller.commands.SetThrottleCommand;
 import com.example.lab4.simulation.model.dto.FrictionDTO;
 import com.example.lab4.simulation.model.dto.TerrainDTO;
-import javafx.geometry.Insets;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
+import com.example.lab4.simulation.view.UIStateModel;
+import com.example.lab4.simulation.view.factory.ViewFactory;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class MainView {
 
-    private final BorderPane root;
-    private final TerrainCanvas terrainCanvas;
+    private final BorderPane root = new BorderPane();
 
-    public MainView(SimulationController controller) {
-        this.root = new BorderPane();
+    public MainView(SimulationController controller, ViewFactory viewFactory, UIStateModel uiStateModel) {
 
-        // DTO террейна
+        // --- Terrain ---
         TerrainDTO terrainDTO = controller.getTerrainDTO();
         FrictionDTO frictionDTO = controller.getFrictionDTO();
 
-        // Канвас
-        terrainCanvas = new TerrainCanvas(controller, terrainDTO, frictionDTO);
-        root.setCenter(terrainCanvas);
+        TerrainCanvas canvas = new TerrainCanvas(controller, terrainDTO, frictionDTO);
+        root.setCenter(canvas);
 
-        terrainCanvas.widthProperty().bind(root.widthProperty().subtract(250));
-        terrainCanvas.heightProperty().bind(root.heightProperty());
+        canvas.widthProperty().bind(root.widthProperty().subtract(250));
+        canvas.heightProperty().bind(root.heightProperty());
 
-        // ---- Контроллер View ----
-        MainViewController viewController = new MainViewController(controller);
+        // --- Controls ---
+        MainControlsPanel controls = new MainControlsPanel(controller, viewFactory, uiStateModel);
+        VBox leftPanel = controls.create();
 
-        // Добавляем панель
-        VBox leftPanel = viewController.createControlPanel();
         root.setLeft(leftPanel);
     }
 
@@ -46,4 +35,3 @@ public class MainView {
         return root;
     }
 }
-

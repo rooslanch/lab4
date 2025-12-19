@@ -1,8 +1,8 @@
 package com.example.lab4.simulation.view.log;
 
 import com.example.lab4.simulation.controller.events.*;
+import com.example.lab4.simulation.controller.observers.ObserverRegistration;
 import com.example.lab4.simulation.controller.observers.SimulationObserver;
-import javafx.application.Platform;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -10,7 +10,15 @@ import java.util.Date;
 public class LogObserver implements SimulationObserver {
 
     private final LogWindow window = new LogWindow();
+    private ObserverRegistration registration;
+    private Runnable onCloseCallback;
+
     private final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss.SSS");
+
+    public void setRegistration(ObserverRegistration registration) {
+        this.registration = registration;
+        updateOnClose();
+    }
 
     private void log(String msg) {
         window.enqueue("[" + sdf.format(new Date()) + "] " + msg);
@@ -49,13 +57,22 @@ public class LogObserver implements SimulationObserver {
         }
 
         if (ev instanceof MassChangedEvent m) {
-            log(String.format("Mass changed: x=%.2f", m.getNewMass()));
+            log(String.format("Mass changed: %.2f", m.getNewMass()));
         }
 
         if (ev instanceof FrictionChangedEvent f) {
-            log(String.format("Friction changed: x=%.2f", f.getNewFriction()));
+            log(String.format("Friction changed: %.2f", f.getNewFriction()));
         }
+    }
 
+    public void setOnCloseCallback(Runnable callback) {
+        this.onCloseCallback = callback;
+        updateOnClose();
+    }
+    private void updateOnClose() {
+        window.setOnClose(() -> {
+            if (registration != null) registration.unregister();
+            if (onCloseCallback != null) onCloseCallback.run();
+        });
     }
 }
-
