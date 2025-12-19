@@ -25,6 +25,11 @@ public class Terrain {
         return frictionProfile.getFrictionAt(x);
     }
 
+    public FrictionProfile getFrictionProfile () {
+        return frictionProfile;
+    }
+
+
     public List<TerrainPoint> getPoints() {
         return points;
     }

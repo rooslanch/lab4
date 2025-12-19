@@ -11,9 +11,12 @@ import com.example.lab4.simulation.controller.thread.SimulationLoop;
 import com.example.lab4.simulation.controller.thread.TimingConfig;
 import com.example.lab4.simulation.model.PhysicsEngine;
 import com.example.lab4.simulation.model.PhysicsModel;
+import com.example.lab4.simulation.model.FrictionProfile;
 import com.example.lab4.simulation.model.Terrain;
+import com.example.lab4.simulation.model.dto.FrictionDTO;
 import com.example.lab4.simulation.model.dto.SnapshotDTO;
 import com.example.lab4.simulation.model.dto.TerrainDTO;
+import com.example.lab4.simulation.model.mapper.FrictionMapper;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -40,6 +43,11 @@ public class SimulationControllerImpl implements SimulationController {
                         .map(p -> new TerrainDTO.Point(p.getX(), p.getH()))
                         .toList()
         );
+    }
+
+    @Override
+    public FrictionDTO getFrictionDTO() {
+        return FrictionMapper.toDTO(terrain.getFrictionProfile());
     }
     @Override
     public SnapshotDTO getSnapshotDTO() {
@@ -94,6 +102,8 @@ public class SimulationControllerImpl implements SimulationController {
 
         return new SimpleObserverRegistration(() -> observers.remove(observer)); // передаем коллбек для отписки
     }
+
+
 
     /** Вызывается SimulationLoop при возникновении событий */
     @Override

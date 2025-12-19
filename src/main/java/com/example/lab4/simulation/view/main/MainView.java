@@ -4,6 +4,7 @@ import com.example.lab4.simulation.controller.SimulationController;
 import com.example.lab4.simulation.controller.commands.ResetSimulationCommand;
 import com.example.lab4.simulation.controller.commands.SetPausedCommand;
 import com.example.lab4.simulation.controller.commands.SetThrottleCommand;
+import com.example.lab4.simulation.model.dto.FrictionDTO;
 import com.example.lab4.simulation.model.dto.TerrainDTO;
 import javafx.geometry.Insets;
 import javafx.scene.canvas.Canvas;
@@ -24,9 +25,10 @@ public class MainView {
 
         // DTO террейна
         TerrainDTO terrainDTO = controller.getTerrainDTO();
+        FrictionDTO frictionDTO = controller.getFrictionDTO();
 
         // Канвас
-        terrainCanvas = new TerrainCanvas(controller, terrainDTO);
+        terrainCanvas = new TerrainCanvas(controller, terrainDTO, frictionDTO);
         root.setCenter(terrainCanvas);
 
         terrainCanvas.widthProperty().bind(root.widthProperty().subtract(250));

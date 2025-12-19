@@ -10,7 +10,7 @@ public class PresetTerrainFactory {
                 new TerrainPoint(0, height),
                 new TerrainPoint(length, height)
         );
-        PiecewiseFrictionProfile friction = new PiecewiseFrictionProfile();
+        FrictionProfile friction = new FrictionProfile();
         friction.addSection(0.0, 0.02); // весь участок — слабое трение
 
         return new Terrain(points, friction);
@@ -21,7 +21,7 @@ public class PresetTerrainFactory {
         points.add(new TerrainPoint(0, 0));
         points.add(new TerrainPoint(length / 2, height));
         points.add(new TerrainPoint(length, 0));
-        PiecewiseFrictionProfile friction = new PiecewiseFrictionProfile();
+        FrictionProfile friction = new FrictionProfile();
         friction.addSection(0.0, 0.02);                 // начало — асфальт
         friction.addSection(length / 2, 0.08);          // горка — грязь
 
@@ -36,7 +36,7 @@ public class PresetTerrainFactory {
             double y = Math.random() * maxHeight;
             points.add(new TerrainPoint(x, y));
         }
-        PiecewiseFrictionProfile friction = new PiecewiseFrictionProfile();
+        FrictionProfile friction = new FrictionProfile();
         friction.addSection(0.0, 0.03);
         friction.addSection(length * 0.3, 0.06);
         friction.addSection(length * 0.7, 0.01);
@@ -54,11 +54,11 @@ public class PresetTerrainFactory {
             double y = Math.sin(i * 2 * Math.PI / (numPoints / waves)) * amplitude;
             points.add(new TerrainPoint(x, y));
         }
-        PiecewiseFrictionProfile friction = new PiecewiseFrictionProfile();
+        FrictionProfile friction = new FrictionProfile();
         friction.addSection(0.0, 0.02);
-        friction.addSection(length * 0.25, 0.05);
-        friction.addSection(length * 0.5, 0.01);
-        friction.addSection(length * 0.75, 0.07);
+        friction.addSection(length * 0.25, 0.1);
+        friction.addSection(length * 0.5, 0.4);
+        friction.addSection(length * 0.75, 0.8);
 
         return new Terrain(points, friction);
     }

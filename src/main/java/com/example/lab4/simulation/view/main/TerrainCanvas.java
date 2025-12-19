@@ -4,6 +4,7 @@ import com.example.lab4.simulation.controller.SimulationController;
 import com.example.lab4.simulation.controller.events.SimulationEvent;
 import com.example.lab4.simulation.controller.events.StateUpdateEvent;
 import com.example.lab4.simulation.controller.observers.SimulationObserver;
+import com.example.lab4.simulation.model.dto.FrictionDTO;
 import com.example.lab4.simulation.model.dto.TerrainDTO;
 import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
@@ -13,18 +14,18 @@ import javafx.scene.paint.Color;
 public class TerrainCanvas extends Canvas implements SimulationObserver {
 
     private TerrainDTO terrainDTO;
+    private FrictionDTO frictionDTO;
     private final SimulationController controller;
 
     private double objectX = 0; // текущая позиция объекта
 
-    public TerrainCanvas(SimulationController controller, TerrainDTO dto) {
+    public TerrainCanvas(SimulationController controller, TerrainDTO dto, FrictionDTO frictionDTO) {
         this.controller = controller;
         this.terrainDTO = dto;
+        this.frictionDTO = frictionDTO;
 
-        // Подписка на события модели
         controller.addObserver(this);
 
-        // Рисуем при изменении размеров
         widthProperty().addListener(evt -> draw());
         heightProperty().addListener(evt -> draw());
     }
@@ -34,11 +35,16 @@ public class TerrainCanvas extends Canvas implements SimulationObserver {
         draw();
     }
 
+    public void setFrictionDTO(FrictionDTO dto) {
+        this.frictionDTO = dto;
+        draw();
+    }
+
     @Override
     public void onEvent(SimulationEvent ev) {
         if (ev instanceof StateUpdateEvent e) {
-            objectX = e.getX(); // обновляем позицию машины
-            Platform.runLater(this::draw); // перерисовка на FX-потоке
+            objectX = e.getX();
+            Platform.runLater(this::draw);
         }
     }
 
@@ -61,27 +67,42 @@ public class TerrainCanvas extends Canvas implements SimulationObserver {
         double rightMarginFactor = 0.1;
         double terrainWidth = maxX - minX;
         double extendedMaxX = maxX + terrainWidth * rightMarginFactor;
-        double scaleX = (extendedMaxX - minX == 0) ? 1 : width / (extendedMaxX - minX);
-        double scaleY;
-        if (maxH - minH == 0) {
-            scaleY = height / 2;
-            minH -= 0.5;
-            maxH += 0.5;
-        } else {
-            scaleY = (height - 2 * padding) / (maxH - minH);
-        }
+        double scaleX = width / (extendedMaxX - minX);
+        double scaleY = (height - 2 * padding) / (maxH - minH);
 
         GraphicsContext gc = getGraphicsContext2D();
         gc.clearRect(0, 0, width, height);
 
+
+
         // --- Рисуем террейн ---
         gc.setStroke(Color.BLACK);
-        gc.setLineWidth(2);
+        gc.setLineWidth(3);
         for (int i = 0; i < points.size() - 1; i++) {
-            double x1 = (points.get(i).getX() - minX) * scaleX;
+
+            double xWorld1 = points.get(i).getX();
+            double xWorld2 = points.get(i + 1).getX();
+
+            double x1 = (xWorld1 - minX) * scaleX;
             double y1 = height - padding - (points.get(i).getH() - minH) * scaleY;
-            double x2 = (points.get(i + 1).getX() - minX) * scaleX;
+
+            double x2 = (xWorld2 - minX) * scaleX;
             double y2 = height - padding - (points.get(i + 1).getH() - minH) * scaleY;
+
+            // --- трение для сегмента ---
+            double friction = 0.0;
+            if (frictionDTO != null) {
+                double midX = (xWorld1 + xWorld2) / 2.0;
+                friction = frictionDTO.getFrictionAt(midX);
+            }
+
+            // нормализуем (0..1)
+            double t = Math.min(Math.max(friction, 0.0), 1.0);
+
+            Color color = Color.LIME.interpolate(Color.RED, t);
+
+            gc.setStroke(color);
+
             gc.strokeLine(x1, y1, x2, y2);
         }
 
