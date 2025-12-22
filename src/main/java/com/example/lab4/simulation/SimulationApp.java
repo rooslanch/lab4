@@ -5,14 +5,10 @@ import com.example.lab4.simulation.controller.SimulationControllerImpl;
 import com.example.lab4.simulation.model.PresetTerrainFactory;
 import com.example.lab4.simulation.model.PhysicsModel;
 import com.example.lab4.simulation.model.Terrain;
-import com.example.lab4.simulation.view.charts.ChartsWindow;
 import com.example.lab4.simulation.view.excel.ExcelExporterObserver;
 import com.example.lab4.simulation.view.factory.ViewFactory;
-import com.example.lab4.simulation.view.log.LogObserver;
-import com.example.lab4.simulation.view.main.MainView;
+import com.example.lab4.simulation.view.main.MainViewController;
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -20,37 +16,31 @@ import java.io.File;
 public class SimulationApp extends Application {
 
     @Override
-    public void start(Stage stage) {
-        Terrain terrain = PresetTerrainFactory.createWave(50,2,2);
-        PhysicsModel model = new PhysicsModel(1); // масса 1000 кг
-
+    public void start(Stage primaryStage) {
+        // ---- Модель и контроллер симуляции ----
+        Terrain terrain = PresetTerrainFactory.createWave(50, 2, 2);
+        PhysicsModel model = new PhysicsModel(1); // масса 1 кг для примера
         SimulationController controller = new SimulationControllerImpl(terrain, model);
 
-        // ---------------- Графики ----------------
-        ChartsWindow chartsWindow = new ChartsWindow(controller.getDt());
-        controller.addObserver(chartsWindow);
-        chartsWindow.show();
-
-        LogObserver logObserver = new LogObserver();
-        controller.addObserver(logObserver);
-
-
-        // путь к папке для сохранения
+        // ---- Экспорт в Excel ----
         String exportDir = "C:\\Users\\Руслан\\Desktop\\simulation_lab4";
-
-// создаём наблюдателя
         ExcelExporterObserver excelObserver = new ExcelExporterObserver(new File(exportDir));
-
-// подписываемся на контроллер
         controller.addObserver(excelObserver);
 
-        ViewFactory factory = new ViewFactory(controller);
 
-        // главное окно
-        factory.createMainWindow(stage);
 
-        // окно управления (слайдеры)
-        factory.createControlWindow();
+
+        // ---- Главный контроллер вида ----
+        MainViewController mainController = new MainViewController(controller);
+        // ---- Фабрика окон ----
+        ViewFactory factory = new ViewFactory(controller, mainController);
+        mainController.setFactory(factory);
+
+        // создаем и показываем главное окно
+        mainController.initMainView(primaryStage);
+
+        // автоматически создаем окно управления (слайдеры)
+        mainController.showControlWindow();
     }
 
     public static void main(String[] args) {

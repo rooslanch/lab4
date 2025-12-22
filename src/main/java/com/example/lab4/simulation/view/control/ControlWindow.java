@@ -7,6 +7,7 @@ import com.example.lab4.simulation.controller.events.MassChangedEvent;
 import com.example.lab4.simulation.controller.events.SimulationEvent;
 import com.example.lab4.simulation.controller.observers.ObserverRegistration;
 import com.example.lab4.simulation.controller.observers.SimulationObserver;
+import com.example.lab4.simulation.view.AbstractWindow;
 import com.example.lab4.simulation.view.SimulationUIState;
 import com.example.lab4.simulation.view.UIStateObserver;
 import javafx.application.Platform;
@@ -16,11 +17,10 @@ import javafx.scene.control.Slider;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class ControlWindow implements SimulationObserver, UIStateObserver {
+public class ControlWindow extends AbstractWindow implements SimulationObserver, UIStateObserver {
 
     private final SimulationController controller;
     private ObserverRegistration registration;
-    private Runnable onCloseCallback;
 
     private Slider massSlider;
     private Slider throttleSlider;
@@ -30,9 +30,6 @@ public class ControlWindow implements SimulationObserver, UIStateObserver {
     public ControlWindow(SimulationController controller) {
         this.controller = controller;
 
-    }
-    public void setOnCloseCallback(Runnable callback) {
-        this.onCloseCallback = callback;
     }
 
     @Override
@@ -45,7 +42,7 @@ public class ControlWindow implements SimulationObserver, UIStateObserver {
 
 
     public void show() {
-        Stage stage = new Stage();
+        stage = new Stage();
         stage.setTitle("Controls");
 
         VBox root = new VBox(15);
@@ -109,6 +106,13 @@ public class ControlWindow implements SimulationObserver, UIStateObserver {
         stage.setScene(new Scene(root, 300, 250));
         stage.show();
 
+    }
+
+    /** Закрытие окна */
+    public void handleClose() {
+        System.out.println("[ControlWindow] closing the window");
+        if (registration != null) registration.unregister();
+        if (onCloseCallback != null) onCloseCallback.run();
     }
 
     public void setRegistration(ObserverRegistration registration) {

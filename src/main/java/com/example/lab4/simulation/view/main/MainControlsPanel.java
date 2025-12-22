@@ -5,7 +5,6 @@ import com.example.lab4.simulation.controller.commands.ResetSimulationCommand;
 import com.example.lab4.simulation.controller.commands.SetPausedCommand;
 import com.example.lab4.simulation.view.SimulationUIState;
 import com.example.lab4.simulation.view.UIStateModel;
-import com.example.lab4.simulation.view.factory.ViewFactory;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -13,14 +12,15 @@ import javafx.scene.layout.VBox;
 public class MainControlsPanel {
 
     private final SimulationController controller;
-    private final ViewFactory viewFactory;
     private final UIStateModel uiState;
+    private final MainViewController mainController; // теперь обращаемся к контроллеру вида
+
     public MainControlsPanel(SimulationController controller,
-                             ViewFactory viewFactory,
-                             UIStateModel uiState) {
+                             UIStateModel uiState,
+                             MainViewController mainController) {
         this.controller = controller;
-        this.viewFactory = viewFactory;
         this.uiState = uiState;
+        this.mainController = mainController;
     }
 
     public VBox create() {
@@ -56,9 +56,7 @@ public class MainControlsPanel {
             uiState.setState(SimulationUIState.STOPPED);
         });
 
-        simButtons.getChildren().addAll(
-                startBtn, stopBtn, pauseBtn, resumeBtn, resetBtn
-        );
+        simButtons.getChildren().addAll(startBtn, stopBtn, pauseBtn, resumeBtn, resetBtn);
 
         // ---- View buttons ----
         HBox viewButtons = new HBox(10);
@@ -66,8 +64,9 @@ public class MainControlsPanel {
         Button showLogBtn = new Button("Show log");
         Button showChartsBtn = new Button("Show charts");
 
-        showLogBtn.setOnAction(e -> viewFactory.createLogWindow());
-        showChartsBtn.setOnAction(e -> viewFactory.createChartsWindow());
+        // делегируем создание окон главному контроллеру вида
+        showLogBtn.setOnAction(e -> mainController.showLogWindow());
+        showChartsBtn.setOnAction(e -> mainController.showChartsWindow());
 
         viewButtons.getChildren().addAll(showLogBtn, showChartsBtn);
 

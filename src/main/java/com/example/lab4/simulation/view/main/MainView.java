@@ -12,7 +12,7 @@ public class MainView {
 
     private final BorderPane root = new BorderPane();
 
-    public MainView(SimulationController controller, ViewFactory viewFactory, UIStateModel uiStateModel) {
+    public MainView(SimulationController controller, UIStateModel uiStateModel, MainViewController viewController) {
 
         // --- Terrain ---
         TerrainDTO terrainDTO = controller.getTerrainDTO();
@@ -25,7 +25,7 @@ public class MainView {
         canvas.heightProperty().bind(root.heightProperty());
 
         // --- Controls ---
-        MainControlsPanel controls = new MainControlsPanel(controller, viewFactory, uiStateModel);
+        MainControlsPanel controls = new MainControlsPanel(controller, uiStateModel,viewController);
         VBox leftPanel = controls.create();
 
         root.setLeft(leftPanel);

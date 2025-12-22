@@ -4,6 +4,7 @@ import com.example.lab4.simulation.controller.events.StateUpdateEvent;
 import com.example.lab4.simulation.controller.events.SimulationEvent;
 import com.example.lab4.simulation.controller.observers.ObserverRegistration;
 import com.example.lab4.simulation.controller.observers.SimulationObserver;
+import com.example.lab4.simulation.view.AbstractWindow;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
@@ -13,11 +14,11 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class ChartsWindow implements SimulationObserver {
+public class ChartsWindow extends AbstractWindow implements SimulationObserver {
 
     private static final int WINDOW_SIZE = 500;
 
-    private final Stage stage = new Stage();
+
     private ObserverRegistration registration;
 
     private final NumberAxis speedXAxis = new NumberAxis();
@@ -32,6 +33,7 @@ public class ChartsWindow implements SimulationObserver {
 
     public ChartsWindow(double dt) {
         this.dt = dt;
+        stage = new Stage();
         stage.setTitle("Simulation Charts");
 
         initAxes();
@@ -144,4 +146,11 @@ public class ChartsWindow implements SimulationObserver {
             positionXAxis.setUpperBound(time);
         }
     }
+
+    /** Закрытие окна */
+    public void handleClose() {
+        if (registration != null) registration.unregister();
+        if (onCloseCallback != null) onCloseCallback.run();
+    }
+
 }
