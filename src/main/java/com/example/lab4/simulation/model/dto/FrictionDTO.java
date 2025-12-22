@@ -1,7 +1,6 @@
 package com.example.lab4.simulation.model.dto;
 
-import com.example.lab4.simulation.model.FrictionProfile;
-import com.example.lab4.simulation.model.dto.FrictionService;
+import com.example.lab4.simulation.model.service.FrictionService;
 
 import java.util.List;
 

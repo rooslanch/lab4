@@ -1,7 +1,5 @@
 package com.example.lab4.simulation.controller;
 
-
-
 import com.example.lab4.simulation.controller.commands.ControlCommand;
 import com.example.lab4.simulation.controller.events.SimulationEvent;
 import com.example.lab4.simulation.controller.observers.ObserverRegistration;
@@ -11,7 +9,6 @@ import com.example.lab4.simulation.controller.thread.SimulationLoop;
 import com.example.lab4.simulation.controller.thread.TimingConfig;
 import com.example.lab4.simulation.model.PhysicsEngine;
 import com.example.lab4.simulation.model.PhysicsModel;
-import com.example.lab4.simulation.model.FrictionProfile;
 import com.example.lab4.simulation.model.Terrain;
 import com.example.lab4.simulation.model.dto.FrictionDTO;
 import com.example.lab4.simulation.model.dto.SnapshotDTO;
@@ -24,7 +21,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class SimulationControllerImpl implements SimulationController {
 
-    private final Terrain terrain;
+    private Terrain terrain;
     private final PhysicsModel model;
     private final PhysicsEngine physics;
     TimingConfig timing = new TimingConfig(0.016); // dt = 16 мс ~ 60 FPS
@@ -40,6 +37,11 @@ public class SimulationControllerImpl implements SimulationController {
     @Override
     public TerrainDTO getTerrainDTO() {
         return TerrainMapper.toDTO(terrain);
+    }
+    @Override
+    public void setTerrain(Terrain terrain) {
+        this.terrain = terrain;
+        this.physics.setTerrain(terrain);
     }
 
     @Override
@@ -84,9 +86,6 @@ public class SimulationControllerImpl implements SimulationController {
         command.execute(this);
     }
 
-    // =========================================================================
-    //                        ВЗАИМОДЕЙСТВИЕ С OBSERVER-АМИ
-    // =========================================================================
 
     /**
      * Кидаем наблюдателя в runnable для последующего коллбека remove
@@ -99,7 +98,6 @@ public class SimulationControllerImpl implements SimulationController {
 
         return new SimpleObserverRegistration(() -> observers.remove(observer)); // передаем коллбек для отписки
     }
-
 
 
     /** Вызывается SimulationLoop при возникновении событий */

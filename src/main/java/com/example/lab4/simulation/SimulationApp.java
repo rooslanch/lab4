@@ -5,7 +5,7 @@ import com.example.lab4.simulation.controller.SimulationControllerImpl;
 import com.example.lab4.simulation.model.PresetTerrainFactory;
 import com.example.lab4.simulation.model.PhysicsModel;
 import com.example.lab4.simulation.model.Terrain;
-import com.example.lab4.simulation.view.excel.ExcelExporterObserver;
+import com.example.lab4.simulation.persistence.excel.ExcelExporterObserver;
 import com.example.lab4.simulation.view.factory.ViewFactory;
 import com.example.lab4.simulation.view.main.MainViewController;
 import javafx.application.Application;

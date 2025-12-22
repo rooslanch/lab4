@@ -5,6 +5,15 @@ import java.util.List;
 
 public class PresetTerrainFactory {
 
+    public static Terrain create(TerrainPreset preset) {
+        return switch (preset) {
+            case FLAT -> createFlat(50, 0);
+            case HUMP -> createHump(50, 5);
+            case RANDOM -> createRandom(50, 5, 20);
+            case WAVE -> createWave(50, 2, 2);
+        };
+    }
+
     public static Terrain createFlat(double length, double height) {
         List<TerrainPoint> points = List.of(
                 new TerrainPoint(0, height),

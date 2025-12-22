@@ -3,6 +3,7 @@ package com.example.lab4.simulation.view.main;
 import com.example.lab4.simulation.controller.SimulationController;
 import com.example.lab4.simulation.controller.events.SimulationEvent;
 import com.example.lab4.simulation.controller.events.StateUpdateEvent;
+import com.example.lab4.simulation.controller.events.TerrainChangedEvent;
 import com.example.lab4.simulation.controller.observers.SimulationObserver;
 import com.example.lab4.simulation.model.dto.FrictionDTO;
 import com.example.lab4.simulation.model.dto.TerrainDTO;
@@ -46,6 +47,12 @@ public class TerrainCanvas extends Canvas implements SimulationObserver {
             objectX = e.getX();
             Platform.runLater(this::draw);
         }
+        if (ev instanceof TerrainChangedEvent e) {
+            this.terrainDTO = e.getTerrainDTO();
+            this.frictionDTO = e.getFrictionDTO();
+            this.objectX = 0;
+            Platform.runLater(this::draw);
+        }
     }
 
     public void draw() {
@@ -62,6 +69,10 @@ public class TerrainCanvas extends Canvas implements SimulationObserver {
         double maxX = points.stream().mapToDouble(p -> p.getX()).max().orElse(1);
         double minH = points.stream().mapToDouble(p -> p.getH()).min().orElse(0);
         double maxH = points.stream().mapToDouble(p -> p.getH()).max().orElse(1);
+        if (minH == maxH) {
+            maxH = minH + 10;
+            minH = minH - 5;
+        }
 
         double padding = 10;
         double rightMarginFactor = 0.1;

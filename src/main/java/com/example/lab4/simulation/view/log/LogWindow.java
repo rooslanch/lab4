@@ -103,6 +103,8 @@ public class LogWindow extends AbstractWindow implements SimulationObserver {
             log(String.format("Friction changed: %.2f", f.getNewFriction()));
         } else if (ev instanceof GravityChangedEvent g) {
             log(String.format("Gravity changed: %.2f", g.getNewGravity()));
+        } else if (ev instanceof TerrainChangedEvent) {
+            log(String.format("Terrain changed"));
         }
     }
 

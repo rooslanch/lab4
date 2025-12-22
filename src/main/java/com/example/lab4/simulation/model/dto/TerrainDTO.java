@@ -21,17 +21,7 @@ public class TerrainDTO {
     }
 
     private final List<Point> points;
-    /**
-     * Контроллер будет создавать этот DTO как:
-     *
-     * public TerrainDTO toDTO() {
-     *     return new TerrainDTO(
-     *         terrain.getPoints().stream()
-     *             .map(p -> new TerrainDTO.Point(p.getX(), p.getH()))
-     *             .toList()
-     *     );
-     * }
-     */
+
     public TerrainDTO(List<Point> points) {
         this.points = List.copyOf(points);
     }

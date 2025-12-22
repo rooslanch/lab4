@@ -110,7 +110,7 @@ public class ControlWindow extends AbstractWindow implements SimulationObserver,
         });
 
         gravitySlider.valueProperty().addListener((obs, o, n) -> {
-            controller.execute(new SetGravityCommand(n.doubleValue()));
+            controller.execute(new SetGravityCommand(n.doubleValue()*9.81));
         });
 
         root.getChildren().addAll(

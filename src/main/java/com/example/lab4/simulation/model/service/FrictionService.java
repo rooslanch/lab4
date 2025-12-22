@@ -1,4 +1,4 @@
-package com.example.lab4.simulation.model.dto;
+package com.example.lab4.simulation.model.service;
 
 import com.example.lab4.simulation.model.dto.FrictionDTO;
 import com.example.lab4.simulation.model.dto.FrictionSectionDTO;

@@ -40,6 +40,6 @@ public interface SimulationController {
     TerrainDTO getTerrainDTO();
 
     FrictionDTO getFrictionDTO();
-
+    void setTerrain(Terrain terrain);
     SnapshotDTO getSnapshotDTO();
 }

@@ -2,7 +2,7 @@ package com.example.lab4.simulation.model;
 
 public class PhysicsEngine {
 
-    private final Terrain terrain;
+    private Terrain terrain;
     private final PhysicsModel model;
 
     private double throttleForce; // текущая сила тяги (команда от контроллера)
@@ -12,6 +12,10 @@ public class PhysicsEngine {
     public PhysicsEngine(Terrain terrain, PhysicsModel model) {
         this.terrain = terrain;
         this.model = model;
+    }
+
+    public void setTerrain(Terrain terrain) {
+        this.terrain = terrain;
     }
 
     public void setThrottleForce(double force) {
