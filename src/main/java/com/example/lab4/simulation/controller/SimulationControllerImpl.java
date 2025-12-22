@@ -24,7 +24,7 @@ public class SimulationControllerImpl implements SimulationController {
     private Terrain terrain;
     private final PhysicsModel model;
     private final PhysicsEngine physics;
-    TimingConfig timing = new TimingConfig(0.016); // dt = 16 мс ~ 60 FPS
+    TimingConfig timing = new TimingConfig(0.016);
 
     private final List<SimulationObserver> observers = new CopyOnWriteArrayList<>();
     private SimulationLoop loop;
@@ -34,10 +34,12 @@ public class SimulationControllerImpl implements SimulationController {
         this.model = model;
         this.physics = new PhysicsEngine(terrain, model);
     }
+
     @Override
     public TerrainDTO getTerrainDTO() {
         return TerrainMapper.toDTO(terrain);
     }
+
     @Override
     public void setTerrain(Terrain terrain) {
         this.terrain = terrain;
@@ -48,6 +50,7 @@ public class SimulationControllerImpl implements SimulationController {
     public FrictionDTO getFrictionDTO() {
         return FrictionMapper.toDTO(terrain.getFrictionProfile());
     }
+
     @Override
     public SnapshotDTO getSnapshotDTO() {
         double x = model.getX();
@@ -59,6 +62,7 @@ public class SimulationControllerImpl implements SimulationController {
 
         return new SnapshotDTO(x, v, a, slope, height, t);
     }
+
     @Override
     public double getDt() {
         return timing.getDt();
@@ -87,20 +91,14 @@ public class SimulationControllerImpl implements SimulationController {
     }
 
 
-    /**
-     * Кидаем наблюдателя в runnable для последующего коллбека remove
-     * @param observer
-     * @return new ObserverRegistration
-     */
     @Override
     public ObserverRegistration addObserver(SimulationObserver observer) {
         observers.add(observer);
 
-        return new SimpleObserverRegistration(() -> observers.remove(observer)); // передаем коллбек для отписки
+        return new SimpleObserverRegistration(() -> observers.remove(observer));
     }
 
 
-    /** Вызывается SimulationLoop при возникновении событий */
     @Override
     public void dispatchEvent(SimulationEvent ev) {
         for (SimulationObserver obs : observers) {
@@ -108,21 +106,23 @@ public class SimulationControllerImpl implements SimulationController {
         }
     }
 
-
     @Override
     public PhysicsEngine getPhysicsEngine() {
         return physics;
     }
+
     @Override
     public PhysicsModel getModel() {
         return model;
     }
+
     @Override
     public Terrain getTerrain() {
         return terrain;
     }
+
     @Override
-    public SimulationLoop getSimulationLoop(){
+    public SimulationLoop getSimulationLoop() {
         return loop;
     }
 }

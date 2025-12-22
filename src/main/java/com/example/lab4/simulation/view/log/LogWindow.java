@@ -44,12 +44,11 @@ public class LogWindow extends AbstractWindow implements SimulationObserver {
         stage.show();
     }
 
-    /** Добавляет строку в буфер */
     private void log(String msg) {
         pending.add("[" + sdf.format(new Date()) + "] " + msg);
     }
 
-    /** Переливает pending → lines → TextArea (FX-поток) */
+
     private void flushPending() {
         if (pending.isEmpty()) return;
 
@@ -72,7 +71,10 @@ public class LogWindow extends AbstractWindow implements SimulationObserver {
     private void startUpdateTimer() {
         Thread t = new Thread(() -> {
             while (true) {
-                try { Thread.sleep(UPDATE_INTERVAL_MS); } catch (InterruptedException ignored) {}
+                try {
+                    Thread.sleep(UPDATE_INTERVAL_MS);
+                } catch (InterruptedException ignored) {
+                }
                 flushPending();
             }
         });
@@ -80,7 +82,6 @@ public class LogWindow extends AbstractWindow implements SimulationObserver {
         t.start();
     }
 
-    /** SimulationObserver */
     @Override
     public void onEvent(SimulationEvent ev) {
         if (ev instanceof StateUpdateEvent s) {
@@ -108,14 +109,12 @@ public class LogWindow extends AbstractWindow implements SimulationObserver {
         }
     }
 
-    /** Регистрация на контроллер */
+
     public void setRegistration(ObserverRegistration registration) {
         this.registration = registration;
     }
 
 
-
-    /** Закрытие окна */
     public void handleClose() {
         System.out.println("[LogWindow] handleClose: closing window");
         if (registration != null) {
@@ -134,7 +133,6 @@ public class LogWindow extends AbstractWindow implements SimulationObserver {
         }
     }
 
-    /** Показать окно */
     public void show() {
         if (stage != null && !stage.isShowing()) stage.show();
     }

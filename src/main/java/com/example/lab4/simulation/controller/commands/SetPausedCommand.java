@@ -3,8 +3,7 @@ package com.example.lab4.simulation.controller.commands;
 import com.example.lab4.simulation.controller.SimulationController;
 import com.example.lab4.simulation.controller.events.PausedChangedEvent;
 import com.example.lab4.simulation.controller.thread.SimulationLoop;
-import com.example.lab4.simulation.model.PhysicsEngine;
-import com.example.lab4.simulation.model.PhysicsModel;
+
 
 public class SetPausedCommand implements ControlCommand {
 

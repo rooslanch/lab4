@@ -5,24 +5,31 @@ import java.util.List;
 public class TerrainInterpolator {
 
     private final List<TerrainPoint> points;
+
     public TerrainInterpolator(List<TerrainPoint> points) {
         this.points = points;
     }
 
-    /** Линейная интерполяция высоты */
+    /**
+     * Линейная интерполяция высоты
+     */
     public double getHeight(double x) {
         Segment seg = findSegment(x);
         return interpolateHeight(x, seg);
     }
 
-    /** Уклон dh/dx – НЕ угол, просто отношение. Угол = atan(slope). */
+    /**
+     * Уклон dh/dx – отношение. Угол = atan(slope).
+     */
     public double getSlope(double x) {
         Segment seg = findSegment(x);
         return (seg.h1 - seg.h0) / (seg.x1 - seg.x0);
     }
 
 
-    /** Ищем между какими точками находится x */
+    /**
+     * Ищем между какими точками находится x
+     */
     private Segment findSegment(double x) {
 
 
@@ -51,13 +58,14 @@ public class TerrainInterpolator {
         throw new IllegalStateException("Segment should always be found");
     }
 
-    /** Линейная интерполяция по сегменту */
+    /**
+     * Линейная интерполяция по сегменту
+     */
     private double interpolateHeight(double x, Segment s) {
         double t = (x - s.x0) / (s.x1 - s.x0); // сколько пройдено по сегменту
         return s.h0 + t * (s.h1 - s.h0); // h0 + t * разница_высот
     }
 
-    /** Упрощённая структура сегмента */
     private static class Segment {
         final double x0, h0;
         final double x1, h1;

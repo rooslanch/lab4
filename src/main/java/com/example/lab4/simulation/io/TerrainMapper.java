@@ -1,22 +1,19 @@
-package com.example.lab4.simulation.persistence;
+package com.example.lab4.simulation.io;
 
 import com.example.lab4.simulation.model.*;
-import com.example.lab4.simulation.persistence.dto.*;
+import com.example.lab4.simulation.io.dto.*;
 
 import java.util.List;
 
 public class TerrainMapper {
 
-    /* -------- JSON → MODEL -------- */
 
     public static Terrain fromJson(TerrainFileDTO dto) {
 
-        // points
         List<TerrainPoint> points = dto.terrain.points.stream()
                 .map(p -> new TerrainPoint(p.x, p.h))
                 .toList();
 
-        // friction
         FrictionProfile friction = new FrictionProfile();
         if (dto.friction != null && dto.friction.sections != null) {
             dto.friction.sections.forEach(s ->
@@ -27,7 +24,6 @@ public class TerrainMapper {
         return new Terrain(points, friction);
     }
 
-    /* -------- MODEL → JSON -------- */
 
     public static TerrainFileDTO toJson(Terrain terrain) {
 
@@ -42,7 +38,6 @@ public class TerrainMapper {
             return jp;
         }).toList();
 
-        // friction
         FrictionJsonDTO frictionDto = new FrictionJsonDTO();
         frictionDto.sections = terrain.getFrictionProfile()
                 .getSections()

@@ -2,8 +2,6 @@ package com.example.lab4.simulation.controller.commands;
 
 import com.example.lab4.simulation.controller.SimulationController;
 import com.example.lab4.simulation.controller.events.ThrottleChangedEvent;
-import com.example.lab4.simulation.model.PhysicsEngine;
-import com.example.lab4.simulation.model.PhysicsModel;
 
 /**
  * Устанавливает силу тяги (может быть отрицательной).

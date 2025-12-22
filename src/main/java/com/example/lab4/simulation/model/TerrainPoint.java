@@ -1,4 +1,5 @@
 package com.example.lab4.simulation.model;
+
 // минимальный иммутабельный POJO
 public class TerrainPoint {
     private final double x;

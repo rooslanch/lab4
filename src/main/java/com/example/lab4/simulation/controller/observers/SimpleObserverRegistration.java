@@ -7,6 +7,7 @@ public class SimpleObserverRegistration implements ObserverRegistration {
 
     /**
      * Делегирование логики коллбека другим объектам через Runnable
+     *
      * @param unregisterCallback
      */
     public SimpleObserverRegistration(Runnable unregisterCallback) {

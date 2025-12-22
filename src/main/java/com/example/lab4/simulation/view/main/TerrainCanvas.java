@@ -18,7 +18,7 @@ public class TerrainCanvas extends Canvas implements SimulationObserver {
     private FrictionDTO frictionDTO;
     private final SimulationController controller;
 
-    private double objectX = 0; // текущая позиция объекта
+    private double objectX = 0;
 
     public TerrainCanvas(SimulationController controller, TerrainDTO dto, FrictionDTO frictionDTO) {
         this.controller = controller;
@@ -85,8 +85,6 @@ public class TerrainCanvas extends Canvas implements SimulationObserver {
         gc.clearRect(0, 0, width, height);
 
 
-
-        // --- Рисуем террейн ---
         gc.setStroke(Color.BLACK);
         gc.setLineWidth(3);
         for (int i = 0; i < points.size() - 1; i++) {
@@ -100,14 +98,14 @@ public class TerrainCanvas extends Canvas implements SimulationObserver {
             double x2 = (xWorld2 - minX) * scaleX;
             double y2 = height - padding - (points.get(i + 1).getH() - minH) * scaleY;
 
-            // --- трение для сегмента ---
+
             double friction = 0.0;
             if (frictionDTO != null) {
                 double midX = (xWorld1 + xWorld2) / 2.0;
                 friction = frictionDTO.getFrictionAt(midX);
             }
 
-            // нормализуем (0..1)
+
             double t = Math.min(Math.max(friction, 0.0), 1.0);
 
             Color color = Color.LIME.interpolate(Color.RED, t);
@@ -117,7 +115,7 @@ public class TerrainCanvas extends Canvas implements SimulationObserver {
             gc.strokeLine(x1, y1, x2, y2);
         }
 
-        // --- Рисуем точки террейна ---
+
         gc.setFill(Color.RED);
         double pointRadius = 4;
         for (var p : points) {
@@ -126,7 +124,7 @@ public class TerrainCanvas extends Canvas implements SimulationObserver {
             gc.fillOval(x - pointRadius / 2, y - pointRadius / 2, pointRadius, pointRadius);
         }
 
-        // --- Рисуем машину ---
+
         gc.setFill(Color.BLUE);
         double carX = (objectX - minX) * scaleX;
         double carY = height - padding - (controller.getTerrain().getHeightAt(objectX) - minH) * scaleY;

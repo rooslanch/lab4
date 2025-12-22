@@ -1,4 +1,4 @@
-package com.example.lab4.simulation.persistence.dto;
+package com.example.lab4.simulation.io.dto;
 
 import java.util.List;
 

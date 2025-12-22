@@ -37,8 +37,20 @@ public class StateUpdateEvent implements SimulationEvent {
     public double getH() {
         return h;
     }
-    public double getX() { return x; }
-    public double getV() { return v; }
-    public double getA() { return a; }
-    public double getSlope() { return slope; }
+
+    public double getX() {
+        return x;
+    }
+
+    public double getV() {
+        return v;
+    }
+
+    public double getA() {
+        return a;
+    }
+
+    public double getSlope() {
+        return slope;
+    }
 }

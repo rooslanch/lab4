@@ -15,6 +15,7 @@ public class FrictionProfile {
     public void addSection(double fromX, double friction) {
         frictionByX.put(fromX, friction);
     }
+
     public NavigableMap<Double, Double> getSections() {
         // Возвращаем иммутабельную обертку над оригинальной коллекцией
         return Collections.unmodifiableNavigableMap(new TreeMap<>(frictionByX));

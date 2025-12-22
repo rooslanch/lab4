@@ -15,16 +15,24 @@ import com.example.lab4.simulation.model.dto.TerrainDTO;
 
 public interface SimulationController {
 
-    /** Запустить симуляцию (создает поток SimulationLoop) */
+    /**
+     * Запустить симуляцию (создает поток SimulationLoop)
+     */
     void start();
 
-    /** Остановить симуляцию (корректно завершает поток) */
+    /**
+     * Остановить симуляцию (завершает поток)
+     */
     void stop();
 
-    /** Выполнить команду (SetThrottle, ResetSimulation и т.д.) */
+    /**
+     * Выполнить команду (SetThrottle, ResetSimulation и т.д.)
+     */
     void execute(ControlCommand command);
 
-    /** Подписать наблюдателя (view) */
+    /**
+     * Подписать наблюдателя (view)
+     */
     ObserverRegistration addObserver(SimulationObserver observer);
 
 
@@ -35,11 +43,16 @@ public interface SimulationController {
     void dispatchEvent(SimulationEvent simulationEvent);
 
     SimulationLoop getSimulationLoop();
+
     Terrain getTerrain();
+
     double getDt();
+
     TerrainDTO getTerrainDTO();
 
     FrictionDTO getFrictionDTO();
+
     void setTerrain(Terrain terrain);
+
     SnapshotDTO getSnapshotDTO();
 }

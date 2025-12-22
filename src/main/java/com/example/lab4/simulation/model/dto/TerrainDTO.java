@@ -16,8 +16,13 @@ public class TerrainDTO {
             this.h = h;
         }
 
-        public double getX() { return x; }
-        public double getH() { return h; }
+        public double getX() {
+            return x;
+        }
+
+        public double getH() {
+            return h;
+        }
     }
 
     private final List<Point> points;

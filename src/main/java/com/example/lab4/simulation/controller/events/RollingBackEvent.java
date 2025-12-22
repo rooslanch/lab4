@@ -20,7 +20,15 @@ public class RollingBackEvent implements SimulationEvent {
         return timestamp;
     }
 
-    public double getX() { return x; }
-    public double getV() { return v; }
-    public double getSlope() { return slope; }
+    public double getX() {
+        return x;
+    }
+
+    public double getV() {
+        return v;
+    }
+
+    public double getSlope() {
+        return slope;
+    }
 }

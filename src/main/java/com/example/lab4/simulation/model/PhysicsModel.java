@@ -9,16 +9,29 @@ public class PhysicsModel {
         this.m = mass;
     }
 
-    public double getX() { return x; }
-    public double getV() { return v; }
-    public double getMass() { return m; }
+    public double getX() {
+        return x;
+    }
+
+    public double getV() {
+        return v;
+    }
+
+    public double getMass() {
+        return m;
+    }
 
     public void setMass(double m) {
         this.m = m;
     }
 
-    public void setX(double x) { this.x = x; }
-    public void setV(double v) { this.v = v; }
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public void setV(double v) {
+        this.v = v;
+    }
 
     public void reset() {
         this.x = 0;

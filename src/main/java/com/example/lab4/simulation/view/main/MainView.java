@@ -4,7 +4,6 @@ import com.example.lab4.simulation.controller.SimulationController;
 import com.example.lab4.simulation.model.dto.FrictionDTO;
 import com.example.lab4.simulation.model.dto.TerrainDTO;
 import com.example.lab4.simulation.view.UIStateModel;
-import com.example.lab4.simulation.view.factory.ViewFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
@@ -25,7 +24,7 @@ public class MainView {
         canvas.heightProperty().bind(root.heightProperty());
 
         // --- Controls ---
-        MainControlsPanel controls = new MainControlsPanel(controller, uiStateModel,viewController);
+        MainControlsPanel controls = new MainControlsPanel(controller, uiStateModel, viewController);
         VBox leftPanel = controls.create();
 
         root.setLeft(leftPanel);

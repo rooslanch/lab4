@@ -1,7 +1,7 @@
 package com.example.lab4.simulation.controller.commands;
 
 import com.example.lab4.simulation.controller.SimulationController;
-import com.example.lab4.simulation.persistence.TerrainIO;
+import com.example.lab4.simulation.io.TerrainIO;
 
 import java.io.File;
 import java.io.IOException;

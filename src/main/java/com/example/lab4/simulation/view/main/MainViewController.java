@@ -4,9 +4,9 @@ import com.example.lab4.simulation.controller.SimulationController;
 import com.example.lab4.simulation.controller.observers.ObserverRegistration;
 import com.example.lab4.simulation.view.AbstractWindow;
 import com.example.lab4.simulation.view.UIStateModel;
-import com.example.lab4.simulation.view.factory.ViewFactory;
 import com.example.lab4.simulation.view.charts.ChartsWindow;
 import com.example.lab4.simulation.view.control.ControlWindow;
+import com.example.lab4.simulation.view.factory.ViewFactory;
 import com.example.lab4.simulation.view.log.LogWindow;
 import javafx.stage.Stage;
 
@@ -36,7 +36,6 @@ public class MainViewController {
             throw new IllegalStateException("Factory not set! Call setFactory() before using MainViewController.");
         mainView = factory.createMainView(primaryStage);
 
-        // При закрытии главного окна закрываем все дочерние
         primaryStage.setOnCloseRequest(e -> closeAllChildWindows());
     }
 

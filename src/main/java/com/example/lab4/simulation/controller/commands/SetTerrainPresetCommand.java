@@ -21,19 +21,16 @@ public class SetTerrainPresetCommand implements ControlCommand {
     @Override
     public void execute(SimulationController controller) {
 
-        // 1. стоп симуляции
         controller.stop();
 
-        // 2. создаём новый террейн
         Terrain terrain = PresetTerrainFactory.create(preset);
 
-        // 3. reset модели
         controller.getModel().reset();
         controller.getPhysicsEngine().setThrottleForce(0);
         controller.setTerrain(terrain);
         TerrainDTO terrainDTO = TerrainMapper.toDTO(terrain);
         FrictionDTO frictionDTO = FrictionMapper.toDTO(terrain.getFrictionProfile());
-        // 4. событие
+
         controller.dispatchEvent(new TerrainChangedEvent(terrainDTO, frictionDTO));
     }
 }

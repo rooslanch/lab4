@@ -1,4 +1,4 @@
-package com.example.lab4.simulation.persistence.excel;
+package com.example.lab4.simulation.io.excel;
 
 import com.example.lab4.simulation.controller.events.SimulationEvent;
 import com.example.lab4.simulation.controller.events.SimulationResetEvent;
@@ -22,7 +22,7 @@ public class ExcelExporterObserver implements SimulationObserver {
     private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 
     private Thread exportThread;
-    private long startTimestamp;  // Переменная для хранения времени начала записи
+    private long startTimestamp;
 
     public ExcelExporterObserver(File outputDir) {
         this.outputDir = outputDir;
@@ -43,7 +43,7 @@ public class ExcelExporterObserver implements SimulationObserver {
             header.createCell(3).setCellValue("Slope");
             header.createCell(4).setCellValue("Height");
             header.createCell(5).setCellValue("Timestamp");
-            header.createCell(6).setCellValue("Relative Time (ms)"); // Новый столбец для относительного времени
+            header.createCell(6).setCellValue("Relative Time (ms)");
 
             // Сохраняем время старта записи
             startTimestamp = System.currentTimeMillis();
@@ -52,7 +52,7 @@ public class ExcelExporterObserver implements SimulationObserver {
                 try {
                     SnapshotDTO snap = queue.poll();
                     if (snap == null) {
-                        Thread.sleep(10); // ждём новые данные
+                        Thread.sleep(10);
                         continue;
                     }
 
@@ -63,18 +63,19 @@ public class ExcelExporterObserver implements SimulationObserver {
                     row.createCell(3).setCellValue(snap.getSlope());
                     row.createCell(4).setCellValue(snap.getHeight());
 
-                    // Форматируем время
+
                     String formattedTime = sdf.format(new Date((long) snap.getTimestamp()));
                     row.createCell(5).setCellValue(formattedTime);
 
-                    // Рассчитываем относительное время в миллисекундах с момента старта
-                    long relativeTime = System.currentTimeMillis() - startTimestamp;
-                    row.createCell(6).setCellValue(relativeTime);  // Записываем относительное время в новый столбец
 
-                } catch (InterruptedException ignored) {}
+                    long relativeTime = System.currentTimeMillis() - startTimestamp;
+                    row.createCell(6).setCellValue(relativeTime);
+
+                } catch (InterruptedException ignored) {
+                }
             }
 
-            // Сохраняем файл
+
             try {
                 if (!outputDir.exists()) outputDir.mkdirs();
                 String filename = "simulation_" + System.currentTimeMillis() + ".xlsx";
@@ -82,7 +83,7 @@ public class ExcelExporterObserver implements SimulationObserver {
                 try (FileOutputStream fos = new FileOutputStream(file)) {
                     workbook.write(fos);
                 }
-                workbook.dispose(); // освобождаем временные файлы
+                workbook.dispose();
                 System.out.println("Simulation exported to " + file.getAbsolutePath());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -107,7 +108,6 @@ public class ExcelExporterObserver implements SimulationObserver {
         }
 
         if (ev instanceof SimulationResetEvent) {
-            // останавливаем поток и создаем новый файл
             stopExportThread();
             startExportThread();
         }
@@ -117,7 +117,8 @@ public class ExcelExporterObserver implements SimulationObserver {
         running = false;
         try {
             exportThread.join();
-        } catch (InterruptedException ignored) {}
+        } catch (InterruptedException ignored) {
+        }
         running = true;
     }
 }

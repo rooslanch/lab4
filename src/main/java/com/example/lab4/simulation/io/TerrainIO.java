@@ -1,7 +1,7 @@
-package com.example.lab4.simulation.persistence;
+package com.example.lab4.simulation.io;
 
 import com.example.lab4.simulation.model.Terrain;
-import com.example.lab4.simulation.persistence.dto.TerrainFileDTO;
+import com.example.lab4.simulation.io.dto.TerrainFileDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;

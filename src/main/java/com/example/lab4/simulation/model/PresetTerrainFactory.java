@@ -20,7 +20,7 @@ public class PresetTerrainFactory {
                 new TerrainPoint(length, height)
         );
         FrictionProfile friction = new FrictionProfile();
-        friction.addSection(0.0, 0.02); // весь участок — слабое трение
+        friction.addSection(0.0, 0.02);
 
         return new Terrain(points, friction);
     }
@@ -31,8 +31,8 @@ public class PresetTerrainFactory {
         points.add(new TerrainPoint(length / 2, height));
         points.add(new TerrainPoint(length, 0));
         FrictionProfile friction = new FrictionProfile();
-        friction.addSection(0.0, 0.02);                 // начало — асфальт
-        friction.addSection(length / 2, 0.08);          // горка — грязь
+        friction.addSection(0.0, 0.02);
+        friction.addSection(length / 2, 0.08);
 
         return new Terrain(points, friction);
     }
@@ -53,7 +53,6 @@ public class PresetTerrainFactory {
         return new Terrain(points, friction);
     }
 
-    // Можно добавить любые фигурные пресеты
     public static Terrain createWave(double length, double amplitude, int waves) {
         List<TerrainPoint> points = new ArrayList<>();
         int numPoints = waves * 20;

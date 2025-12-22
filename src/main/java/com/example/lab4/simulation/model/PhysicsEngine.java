@@ -23,9 +23,7 @@ public class PhysicsEngine {
     }
 
     /**
-     * Выполняет один шаг физики.
-     *
-     * @param dt шаг интегрирования в секундах (например, 0.016 = 60 Гц)
+     * Выполняет один шаг физики
      */
     public void update(double dt) {
 
@@ -68,7 +66,7 @@ public class PhysicsEngine {
 
 
     /**
-     * Текущие данные для отображения.
+     * Текущие данные для отображения
      */
     public double getCurrentSlope() {
         return terrain.getSlopeAt(model.getX());

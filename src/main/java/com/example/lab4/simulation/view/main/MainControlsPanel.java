@@ -20,6 +20,7 @@ public class MainControlsPanel {
     private final SimulationController controller;
     private final UIStateModel uiState;
     private final MainViewController mainController;
+
     public MainControlsPanel(SimulationController controller,
                              UIStateModel uiState,
                              MainViewController mainController) {
@@ -32,7 +33,6 @@ public class MainControlsPanel {
         VBox panel = new VBox(10);
         VBox simButtons = new VBox(10);
 
-        // ---- Simulation buttons ----
         HBox simRow1 = new HBox(10);
         HBox simRow2 = new HBox(10);
         HBox presetRow = new HBox(10);
@@ -75,7 +75,6 @@ public class MainControlsPanel {
         });
 
 
-
         loadBtn.setOnAction(e -> {
             FileChooser fc = new FileChooser();
             fc.getExtensionFilters().add(
@@ -105,14 +104,12 @@ public class MainControlsPanel {
         presetRow.getChildren().addAll(presetLabel, presetBox);
         simRow1.getChildren().addAll(startBtn, stopBtn, pauseBtn, resumeBtn);
         simRow2.getChildren().addAll(resetBtn, loadBtn, saveBtn);
-        simButtons.getChildren().addAll(simRow1, simRow2,presetRow);
-        // ---- View buttons ----
+        simButtons.getChildren().addAll(simRow1, simRow2, presetRow);
         HBox viewButtons = new HBox(10);
 
         Button showLogBtn = new Button("Show log");
         Button showChartsBtn = new Button("Show charts");
 
-        // делегируем создание окон главному контроллеру вида
         showLogBtn.setOnAction(e -> mainController.showLogWindow());
         showChartsBtn.setOnAction(e -> mainController.showChartsWindow());
 

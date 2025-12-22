@@ -33,7 +33,7 @@ public class SimulationLoop implements Runnable {
         this.timing = timing;
     }
 
-    /** Запуск цикла */
+
     public void start() {
         running = true;
         Thread t = new Thread(this, "SimulationLoop");
@@ -41,12 +41,12 @@ public class SimulationLoop implements Runnable {
         t.start();
     }
 
-    /** Полная остановка */
+
     public void stop() {
         running = false;
     }
 
-    /** Пауза */
+
     public void setPaused(boolean value) {
         this.paused = value;
     }
@@ -54,19 +54,20 @@ public class SimulationLoop implements Runnable {
     public boolean isRunning() {
         return running;
     }
+
     public double getA() {
         return engine.getCurrentAcceleration();
     }
 
     @Override
     public void run() {
-        long frameNanos = (long)(1e9 * timing.getDt());
+        long frameNanos = (long) (1e9 * timing.getDt());
         long nextTime = System.nanoTime();
 
         while (running) {
             if (!paused) {
 
-                // шаг физики
+
                 engine.update(timing.getDt());
 
                 double x = model.getX();
@@ -79,7 +80,7 @@ public class SimulationLoop implements Runnable {
                     controller.dispatchEvent(new FrictionChangedEvent(friction));
                 }
 
-                // Ограничение координаты по террейну
+
                 if (x <= terrain.getMinX()) {
                     model.setX(terrain.getMinX());
                     if (v < 0) model.setV(0);
@@ -90,12 +91,12 @@ public class SimulationLoop implements Runnable {
                     controller.dispatchEvent(new BoundaryReachedEvent(BoundaryType.END, terrain.getMaxX()));
                 }
 
-                // Скатывание назад (скорость < 0) только если внутри границ
+
                 if (v < 0 && x > terrain.getMinX()) {
                     controller.dispatchEvent(new RollingBackEvent(x, v, slope));
                 }
 
-                // Периодическое обновление состояния
+
                 controller.dispatchEvent(
                         new StateUpdateEvent(
                                 model.getX(),
@@ -107,13 +108,14 @@ public class SimulationLoop implements Runnable {
                 );
             }
 
-            // ждём до следующего кадра
+
             nextTime += frameNanos;
             long sleep = nextTime - System.nanoTime();
             if (sleep > 0) {
                 try {
-                    Thread.sleep(sleep / 1_000_000, (int)(sleep % 1_000_000));
-                } catch (InterruptedException ignored) {}
+                    Thread.sleep(sleep / 1_000_000, (int) (sleep % 1_000_000));
+                } catch (InterruptedException ignored) {
+                }
             }
         }
     }

@@ -145,7 +145,9 @@ public class ChartsWindow extends AbstractWindow implements SimulationObserver {
         }
     }
 
-    /** Закрытие окна */
+    /**
+     * Закрытие окна
+     */
     public void handleClose() {
         if (registration != null) registration.unregister();
         if (onCloseCallback != null) onCloseCallback.run();

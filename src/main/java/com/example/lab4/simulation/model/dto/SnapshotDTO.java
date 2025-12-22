@@ -17,10 +17,27 @@ public class SnapshotDTO {
         this.timestamp = timestamp;
     }
 
-    public double getX() { return x; }
-    public double getV() { return v; }
-    public double getA() { return a; }
-    public double getSlope() { return slope; }
-    public double getHeight() { return height; }
-    public double getTimestamp() { return timestamp; }
+    public double getX() {
+        return x;
+    }
+
+    public double getV() {
+        return v;
+    }
+
+    public double getA() {
+        return a;
+    }
+
+    public double getSlope() {
+        return slope;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    public double getTimestamp() {
+        return timestamp;
+    }
 }

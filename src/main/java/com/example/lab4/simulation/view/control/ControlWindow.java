@@ -50,7 +50,6 @@ public class ControlWindow extends AbstractWindow implements SimulationObserver,
         VBox root = new VBox(15);
         root.setPadding(new javafx.geometry.Insets(10));
 
-        // -------- MASS --------
         Label massLabel = new Label("Mass (kg)");
         massSlider = new Slider(1, 1000, 1);
         massSlider.setShowTickLabels(true);
@@ -59,7 +58,6 @@ public class ControlWindow extends AbstractWindow implements SimulationObserver,
         massSlider.setMajorTickUnit(200);
         massSlider.setMinorTickCount(0);
 
-        //------- GRAVITY ---------
         Label gravityLabel = new Label("Gravity (g)");
         gravitySlider = new Slider(1,10,1);
         gravitySlider.setShowTickLabels(true);
@@ -68,7 +66,6 @@ public class ControlWindow extends AbstractWindow implements SimulationObserver,
         gravitySlider.setMajorTickUnit(1);
         gravitySlider.setMinorTickCount(0);
 
-        // -------- THROTTLE --------
         Label throttleLabel = new Label("Throttle Force");
         double initialMaxThrottle = 5;
         throttleSlider = new Slider(-initialMaxThrottle, initialMaxThrottle, 0);
@@ -77,12 +74,6 @@ public class ControlWindow extends AbstractWindow implements SimulationObserver,
         throttleSlider.setMajorTickUnit((initialMaxThrottle * 2) / 5);
         throttleSlider.setMinorTickCount(0);
 
-
-
-
-
-
-        // --- Listeners (копия логики) ---
         massSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
             if (massSliderBeingDragged) return;
 

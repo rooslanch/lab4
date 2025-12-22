@@ -28,7 +28,10 @@ public abstract class AbstractWindow {
         }
 
     }
-    /** Унифицированное закрытие окна */
+
+    /**
+     * Унифицированное закрытие окна
+     */
     public void close() {
         if (onCloseCallback != null) onCloseCallback.run();
         System.out.println("[AbstractWindow] closing window");
@@ -36,7 +39,7 @@ public abstract class AbstractWindow {
             onClosedByController.run();
         }
         if (stage != null) {
-            stage.close();   // закрываем Stage
+            stage.close();
         }
     }
 

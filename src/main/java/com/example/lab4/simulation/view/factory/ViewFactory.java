@@ -24,7 +24,6 @@ public class ViewFactory {
         return uiState;
     }
 
-    // Возвращаем главный view
     public MainView createMainView(Stage primaryStage) {
         MainView view = new MainView(controller, uiState, viewController);
         primaryStage.setScene(new javafx.scene.Scene(view.getRoot(), 1200, 800));

@@ -15,6 +15,7 @@ public class FrictionDTO {
     public List<FrictionSectionDTO> getSections() {
         return sections;
     }
+
     public double getFrictionAt(double x) {
         return FrictionService.getFrictionAt(this, x);
     }
