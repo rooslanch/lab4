@@ -7,7 +7,7 @@ public class PhysicsEngine {
 
     private double throttleForce; // текущая сила тяги (команда от контроллера)
 
-    public static final double G = 9.81;
+    public double g = 9.81;
 
     public PhysicsEngine(Terrain terrain, PhysicsModel model) {
         this.terrain = terrain;
@@ -35,9 +35,9 @@ public class PhysicsEngine {
         double cosTheta = 1.0 / Math.sqrt(1 + slope * slope);
 
         double gravityComponent =
-                m * G * slope / Math.sqrt(1 + slope * slope);
+                m * g * slope / Math.sqrt(1 + slope * slope);
 
-        double normalForce = m * G * cosTheta;
+        double normalForce = m * g * cosTheta;
         double frictionForce = mu * normalForce * Math.signum(v);
 
         double netForce =
@@ -54,6 +54,14 @@ public class PhysicsEngine {
         model.setX(newX);
     }
 
+    public void setGravity(double g) {
+        this.g = g;
+    }
+
+    public double getGravity() {
+        return g;
+    }
+
 
     /**
      * Текущие данные для отображения.
@@ -64,7 +72,7 @@ public class PhysicsEngine {
 
     public double getCurrentAcceleration() {
         double slope = terrain.getSlopeAt(model.getX());
-        double gravityComponent = model.getMass() * G * slope / Math.sqrt(1 + slope * slope);
+        double gravityComponent = model.getMass() * g * slope / Math.sqrt(1 + slope * slope);
         return (throttleForce - gravityComponent) / model.getMass();
     }
 }

@@ -17,6 +17,7 @@ import com.example.lab4.simulation.model.dto.FrictionDTO;
 import com.example.lab4.simulation.model.dto.SnapshotDTO;
 import com.example.lab4.simulation.model.dto.TerrainDTO;
 import com.example.lab4.simulation.model.mapper.FrictionMapper;
+import com.example.lab4.simulation.model.mapper.TerrainMapper;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -38,11 +39,7 @@ public class SimulationControllerImpl implements SimulationController {
     }
     @Override
     public TerrainDTO getTerrainDTO() {
-        return new TerrainDTO(
-                terrain.getPoints().stream()
-                        .map(p -> new TerrainDTO.Point(p.getX(), p.getH()))
-                        .toList()
-        );
+        return TerrainMapper.toDTO(terrain);
     }
 
     @Override

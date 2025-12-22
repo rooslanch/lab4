@@ -1,6 +1,7 @@
 package com.example.lab4.simulation.view.control;
 
 import com.example.lab4.simulation.controller.SimulationController;
+import com.example.lab4.simulation.controller.commands.SetGravityCommand;
 import com.example.lab4.simulation.controller.commands.SetMassCommand;
 import com.example.lab4.simulation.controller.commands.SetThrottleCommand;
 import com.example.lab4.simulation.controller.events.MassChangedEvent;
@@ -24,6 +25,7 @@ public class ControlWindow extends AbstractWindow implements SimulationObserver,
 
     private Slider massSlider;
     private Slider throttleSlider;
+    private Slider gravitySlider;
 
     private boolean massSliderBeingDragged = false;
 
@@ -57,6 +59,15 @@ public class ControlWindow extends AbstractWindow implements SimulationObserver,
         massSlider.setMajorTickUnit(200);
         massSlider.setMinorTickCount(0);
 
+        //------- GRAVITY ---------
+        Label gravityLabel = new Label("Gravity (g)");
+        gravitySlider = new Slider(1,10,1);
+        gravitySlider.setShowTickLabels(true);
+        gravitySlider.setShowTickMarks(true);
+        gravitySlider.setBlockIncrement(1);
+        gravitySlider.setMajorTickUnit(1);
+        gravitySlider.setMinorTickCount(0);
+
         // -------- THROTTLE --------
         Label throttleLabel = new Label("Throttle Force");
         double initialMaxThrottle = 5;
@@ -65,6 +76,11 @@ public class ControlWindow extends AbstractWindow implements SimulationObserver,
         throttleSlider.setShowTickMarks(true);
         throttleSlider.setMajorTickUnit((initialMaxThrottle * 2) / 5);
         throttleSlider.setMinorTickCount(0);
+
+
+
+
+
 
         // --- Listeners (копия логики) ---
         massSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
@@ -93,14 +109,18 @@ public class ControlWindow extends AbstractWindow implements SimulationObserver,
             }
         });
 
+        gravitySlider.valueProperty().addListener((obs, o, n) -> {
+            controller.execute(new SetGravityCommand(n.doubleValue()));
+        });
+
         root.getChildren().addAll(
                 massLabel, massSlider,
-                throttleLabel, throttleSlider
+                throttleLabel, throttleSlider,
+                gravityLabel, gravitySlider
         );
 
         stage.setOnCloseRequest(e -> {
-            if (registration != null) registration.unregister();
-            if (onCloseCallback != null) onCloseCallback.run();
+            handleClose();
         });
 
         stage.setScene(new Scene(root, 300, 250));
@@ -113,6 +133,7 @@ public class ControlWindow extends AbstractWindow implements SimulationObserver,
         System.out.println("[ControlWindow] closing the window");
         if (registration != null) registration.unregister();
         if (onCloseCallback != null) onCloseCallback.run();
+        if (onClosedByItself != null) onClosedByItself.run();
     }
 
     public void setRegistration(ObserverRegistration registration) {

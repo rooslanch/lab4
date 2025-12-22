@@ -101,6 +101,8 @@ public class LogWindow extends AbstractWindow implements SimulationObserver {
             log(String.format("Mass changed: %.2f", m.getNewMass()));
         } else if (ev instanceof FrictionChangedEvent f) {
             log(String.format("Friction changed: %.2f", f.getNewFriction()));
+        } else if (ev instanceof GravityChangedEvent g) {
+            log(String.format("Gravity changed: %.2f", g.getNewGravity()));
         }
     }
 
@@ -113,8 +115,21 @@ public class LogWindow extends AbstractWindow implements SimulationObserver {
 
     /** Закрытие окна */
     public void handleClose() {
-        if (registration != null) registration.unregister();
-        if (onCloseCallback != null) onCloseCallback.run();
+        System.out.println("[LogWindow] handleClose: closing window");
+        if (registration != null) {
+            registration.unregister();
+            System.out.println("[LogWindow] handleClose: observer unregistered");
+        }
+
+        if (onCloseCallback != null) {
+            onCloseCallback.run();
+            System.out.println("[LogWindow] handleClose: onCloseCallback executed");
+        }
+
+        if (onClosedByItself != null) {
+            System.out.println("[LogWindow] executing onClosedByItself callback");
+            onClosedByItself.run();
+        }
     }
 
     /** Показать окно */

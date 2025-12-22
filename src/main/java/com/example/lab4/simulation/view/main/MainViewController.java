@@ -45,17 +45,14 @@ public class MainViewController {
             throw new IllegalStateException("Factory not set! Call setFactory() before using MainViewController.");
         ControlWindow window = factory.createControlWindow();
 
-        // Подписка на UIState
         uiState.addObserver(window);
 
-        // Подписка на Controller
         ObserverRegistration reg = controller.addObserver(window);
         window.setRegistration(reg);
 
-        // OnClose callback
         window.setOnCloseCallback(() -> uiState.removeObserver(window));
 
-        childWindows.add(window);
+        registerChildWindow(window);
         window.show();
     }
 
@@ -67,43 +64,47 @@ public class MainViewController {
         ObserverRegistration reg = controller.addObserver(window);
         window.setRegistration(reg);
 
-        // Можно сделать callback через childWindows или отдельный логический callback
-        window.setOnCloseCallback(() -> {}); // при необходимости
-
-        childWindows.add(window);
+        registerChildWindow(window);
         window.show();
     }
 
     public void showLogWindow() {
         if (factory == null)
             throw new IllegalStateException("Factory not set! Call setFactory() before using MainViewController.");
-        // фабрика создаёт новый LogWindow, который уже наследует AbstractWindow
-        LogWindow logWindow = factory.createLogWindow(); // возвращает LogWindow, не void
+        LogWindow window = factory.createLogWindow();
 
-        // подписываем на контроллер
-        ObserverRegistration reg = controller.addObserver(logWindow);
-        logWindow.setRegistration(reg);
+        ObserverRegistration reg = controller.addObserver(window);
+        window.setRegistration(reg);
 
-        // добавляем callback при закрытии для корректной отписки и удаления из списка дочерних окон
-        logWindow.setOnCloseCallback(() -> {
-            childWindows.remove(logWindow);
-            reg.unregister();
+        registerChildWindow(window);
+        window.show();
+    }
+
+    private void registerChildWindow(AbstractWindow window) {
+        childWindows.add(window);
+
+        window.setOnClosedByController(() -> {
+            System.out.println("[MainViewController] Removing closed window (closed by controller): " + window);
+            childWindows.remove(window);
+        });
+        window.setOnClosedByItself(() -> {
+            System.out.println("[MainViewController] Removing closed window (closed by itself): " + window);
+            childWindows.remove(window);
         });
 
-        // добавляем в список дочерних окон
-        childWindows.add(logWindow);
-
-        // показываем окно
-        logWindow.show();
     }
 
 
     private void closeAllChildWindows() {
         System.out.println("[MainViewController] Closing all child windows");
-        for (AbstractWindow w : childWindows) {
-            w.close();
+
+        List<AbstractWindow> copy = new ArrayList<>(childWindows);
+
+        for (AbstractWindow w : copy) {
+            System.out.println("[MainViewController] closing a child window");
+            w.close(); // внутри w.close() childWindows будет уменьшаться — и это ОК
         }
 
-        childWindows.clear();
+        childWindows.clear(); // на всякий случай
     }
 }

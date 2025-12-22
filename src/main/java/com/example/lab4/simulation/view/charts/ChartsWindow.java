@@ -43,9 +43,7 @@ public class ChartsWindow extends AbstractWindow implements SimulationObserver {
         toggleBtn.setOnAction(e -> toggleRegistration());
 
         stage.setOnCloseRequest(e -> {
-            if (registration != null) {
-                registration.unregister();
-            }
+            handleClose();
         });
     }
 
@@ -151,6 +149,7 @@ public class ChartsWindow extends AbstractWindow implements SimulationObserver {
     public void handleClose() {
         if (registration != null) registration.unregister();
         if (onCloseCallback != null) onCloseCallback.run();
+        if (onClosedByItself != null) onClosedByItself.run();
     }
 
 }
